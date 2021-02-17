@@ -41,6 +41,21 @@ void build_tree(std::set<std::pair<char, int>, comp> frequency_table) {
     }
     return roots.back();
 }
+void make_compression_keys(Node *current_node, int key, map<char, int> *key_map){
+
+    make_compression_keys(current_node->get_left(), key, key_map);
+    make_compression_keys(current_node->get_right(), key, key_map);
+}
+
+void make_compression_keys(Node *root){
+    map<char, int> *key_map;
+    int key = 0;
+
+    make_compression_keys(root.get_left(), key, key_map)
+
+}
+
+
 
 
 

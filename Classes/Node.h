@@ -7,8 +7,11 @@ using namespace std;
 
 class Node{
 public:
-    Node(Node *left = nullptr, Node *right = nullptr);
-    Node(Data *data = nullptr);
+    Node(Node *left, Node *right);
+    Node(Data *data);
+
+    Node* get_left();
+    Node* get_right();
 
     Data* get_data();
 
