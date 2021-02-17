@@ -51,7 +51,7 @@ void make_compression_keys(Node *root){
     map<char, int> *key_map;
     int key = 0;
 
-    make_compression_keys(root.get_left(), key, key_map);
+    make_compression_keys(root, key, key_map);
 
 }
 
