@@ -1,6 +1,6 @@
 #include "HelperFunctions.h"
 #include <algorithm>
-
+#include <bitset>
 using namespace std;
 
 bool comparer(Node* first, Node* second){
@@ -41,17 +41,40 @@ Node* build_tree(map<char, int> frequency_table) {
     }
     return roots.back();
 }
-void make_compression_keys(Node *current_node, int key, map<char, int> *key_map){
 
-    make_compression_keys(current_node->get_left(), key, key_map);
-    make_compression_keys(current_node->get_right(), key, key_map);
+
+void make_compression_keys(Node* current_node, bitset<256> *key, map<char, bitset<256>> *key_map, unsigned int *depth){
+
+    if (current_node->get_data()->get_value() != '\0'){
+        key_map->insert(std::pair<char, bitset<256>>(current_node->get_data()->get_value(), key));
+
+    }
+/*    key[depth] = 0;
+    depth++;
+    make_compression_keys(current_node->get_left(), key, key_map, depth);
+    key[depth] = 1;
+    make_compression_keys(current_node->get_right(), key, key_map, depth);
+    depth--;*/
 }
 
-void make_compression_keys(Node *root){
-    map<char, int> *key_map;
-    int key = 0;
 
-    make_compression_keys(root, key, key_map);
+
+void make_compression_keys(Node *root){
+    auto *key_map = new map<char, bitset<256>>;
+    bitset<256> key(0);
+    key = 1;
+    key<<=1;
+
+
+
+    cout << key << endl;
+    key_map->insert(std::pair<char, bitset<256>>(root->get_data()->get_value(), key));
+
+    auto* depth = new unsigned int(0);
+//    make_compression_keys(root, key, key_map, depth);
+
+    delete depth;
+    return;
 
 }
 
