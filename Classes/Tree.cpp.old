@@ -1,0 +1,15 @@
+#include "Tree.h.old"
+
+
+void Tree::push(Node node) {
+
+}
+
+Tree::Tree(Node *left, Node *right) {
+    Data *data = new Data((left->data->get_freq()+right->data->get_freq()));
+    this->root = new Node(data, left, right);
+}
+
+Tree::~Tree() {
+    delete this->root;
+}
