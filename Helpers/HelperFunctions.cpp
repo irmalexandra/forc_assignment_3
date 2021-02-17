@@ -1,14 +1,13 @@
 #include "HelperFunctions.h"
-
+#include <algorithm>
 
 using namespace std;
 
-set<pair<char, int>, comp> sort(map<char, int>& map_to_sort)
-{
-    return set<pair<char, int>, comp> (map_to_sort.begin(), map_to_sort.end());
+bool comparer(Node* first, Node* second){
+    return first->get_data()->get_frequency() > second->get_data()->get_frequency();
 }
 
-set<pair<char, int>, comp> make_frequency_table(vector<char> *file_content) {
+map<char, int> make_frequency_table(vector<char> *file_content) {
     map<char, int> frequency_map;
 
     for (const auto letter:*file_content){
@@ -18,69 +17,29 @@ set<pair<char, int>, comp> make_frequency_table(vector<char> *file_content) {
     }
 
     delete file_content;
-    return sort(frequency_map);
+    return frequency_map;
 }
 
 void build_tree(std::set<std::pair<char, int>, comp> frequency_table) {
     Node *left;
     Node *right;
-    Node *root;
-    std::vector <Node *> char_nodes;
-    std::vector <Node *> roots;
-    auto freq_vect = vector<pair<char, int>>{frequency_table.begin(), frequency_table.end()};
+    std::vector <Node*> roots;
 
-
-
-    while(!freq_vect.empty()){
-        auto pair1 = freq_vect.back();
-        freq_vect.pop_back();
-        char_nodes.push_back(new Node(new Data(pair1.second, pair1.first)));
+    for (auto pair:frequency_table){
+        roots.push_back(new Node( new Data( pair.second, pair.first)));
     }
 
-    while (char_nodes.size() != 1){
-        left = char_nodes[0];
-        right = char_nodes[1];
-
+    while (roots.size() != 1){
+        sort(roots.begin(), roots.end(), comparer);
+        left =  roots.back();
+        roots.pop_back();
+        right = roots.back();
+        roots.pop_back();
+        Node *new_node = new Node(left, right);
+        roots.push_back(new_node);
 
     }
-
-//    auto pair1 = freq_vect.back();
-//    freq_vect.pop_back();
-//    auto pair2 = freq_vect.back();
-//    freq_vect.pop_back();
-//
-//    left = new Node(new Data(pair1.second, pair1.first));
-//    right = new Node(new Data(pair2.second, pair2.first));
-//    if (left->get_data()->get_frequency() < right->get_data()->get_frequency()){ //Gives the least frequent character the highest binary value
-//        root = new Node(left, right);
-//    }
-//    else{
-//        root = new Node(right, left);
-//    }
-//    roots.push_back(root);
-//    while (!freq_vect.empty()){*
-//        auto pair1 = freq_vect.back();
-//        freq_vect.pop_back();
-//        auto pair2 = freq_vect.back();
-//
-//        if (pair2.second < roots.front()->get_data()->get_frequency()){
-//            left = new Node(new Data(pair1.second, pair1.first));
-//            right = new Node(new Data(pair2.second, pair2.first));
-//            if (left->get_data()->get_frequency() < right->get_data()->get_frequency()){ //Gives the least frequent character the highest binary value
-//                root = new Node(left, right);
-//            }
-//            else{
-//                root = new Node(right, left);
-//            }
-//            freq_vect.pop_back();
-//        }
-//        else{
-//            left = new Node(new Data(pair1.second, pair1.first));
-//            root = new Node(left, roots.back());
-//        }
-//        roots.push_back(root);
-//    }
-    std::cout << root << endl;
+    return roots.back();
 }
 
 

@@ -16,9 +16,18 @@ Node::~Node() {
     delete this ->right;
 }
 
+Node * Node::get_left() {
+    return this->left;
+}
+
+Node * Node::get_right() {
+    return this->right;
+}
+
 Data* Node::get_data() {
     return this->data;
 }
+
 
 ostream& operator<< (ostream& out, const Node *node){
     if(node != nullptr){

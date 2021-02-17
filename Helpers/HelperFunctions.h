@@ -10,16 +10,16 @@
 #include "../Classes/Node.h"
 #include "../Classes/Data.h"
 
-struct comp {
-    template <typename T>
-    // overload bool operator
-    bool operator()(const T& left, const T& right){
-        if (left.second != right.second) {
-            return left.second > right.second;
-        }
-        return left.first > right.first;
-    }
-};
+//struct thing {
+//    template <typename T>
+//    // overload bool operator
+//    bool operator()(const T& left, const T& right){
+//        if (left.get_data().get_frequency() != right.get_data().get_frequency()) {
+//            return left.get_data().get_frequency() > right.get_data().get_frequency();
+//        }
+//        return left.get_data().get_value() > right.get_data().get_value();
+//    }
+//};
 
 std::set<std::pair<char, int>, comp> make_frequency_table(std::vector<char> *file_content = nullptr);
 
