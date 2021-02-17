@@ -5,6 +5,8 @@ Data::Data(int freq, char value){
     this->value = value;
 }
 
+
+
 ostream& operator<< (ostream& out, const Data *data){
     out << "f: " << data->freq;
     out << " | ";

@@ -20,7 +20,7 @@ map<char, int> make_frequency_table(vector<char> *file_content) {
     return frequency_map;
 }
 
-void build_tree(std::set<std::pair<char, int>, comp> frequency_table) {
+Node* build_tree(map<char, int> frequency_table) {
     Node *left;
     Node *right;
     std::vector <Node*> roots;
@@ -51,7 +51,7 @@ void make_compression_keys(Node *root){
     map<char, int> *key_map;
     int key = 0;
 
-    make_compression_keys(root.get_left(), key, key_map)
+    make_compression_keys(root.get_left(), key, key_map);
 
 }
 

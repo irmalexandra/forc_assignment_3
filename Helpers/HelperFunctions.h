@@ -21,11 +21,10 @@
 //    }
 //};
 
-std::set<std::pair<char, int>, comp> make_frequency_table(std::vector<char> *file_content = nullptr);
+map<char, int> make_frequency_table(std::vector<char> *file_content = nullptr);
 
-void build_tree(std::set<std::pair<char, int>, comp> frequency_table);
+Node* build_tree(map<char, int> frequency_table);
 
-void sort_map_values(std::map <char, int>& map_to_sort);
-bool compare_values(int first, int second);
+void make_compression_keys(Node *root);
 
 #endif //FORC_PA_3_HELPERFUNCTIONS_H
