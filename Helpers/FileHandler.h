@@ -10,5 +10,5 @@ using namespace std;
 
 vector <char>* read_from_file(const string& filename);
 void write_to_file(const string& filename, map<char, int> *frequency_table, map<char, char*> *key_map);
-int convert_char_arr_to_binary(char* arr);
+void write_bytes_from_arr(map<char, char*> *key_map);
 #endif //FORC_PA_3_FILEHANDLER_H
