@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "Classes/Node.h"
+#include "Helpers/HelperFunctions.h"
 #include "Helpers/FileHandler.h"
 
 
@@ -22,6 +23,7 @@ int main(int argC, char *argv[]) {
 
     ifstream fileIn (file_to_read);
     auto data = read_from_file(file_to_read);
+
     auto frequency_table = make_frequency_table(data);
     auto root = build_tree(*frequency_table);
     map <char, char*>* key_map = make_compression_keys(root);

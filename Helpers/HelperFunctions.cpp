@@ -6,12 +6,12 @@ bool comparer(Node* first, Node* second){
     return first->get_data()->get_frequency() > second->get_data()->get_frequency();
 }
 
-map<char, int> make_frequency_table(vector<char> *file_content) {
-    map<char, int> frequency_map;
+map<char, int>* make_frequency_table(vector<char> *file_content) {
+    auto* frequency_map = new map<char, int>;
 
     for (const auto letter:*file_content){
         if (letter != '\n'){
-            frequency_map[letter] += 1;
+            (*frequency_map)[letter] += 1;
         }
     }
 
