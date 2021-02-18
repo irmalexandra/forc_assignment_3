@@ -84,7 +84,22 @@ map<char, char*>* make_compression_keys(Node *root){
 
 
 
-
+int VectorToInt(vector<char> v)
+{
+    for(int i = 0; i < v.size(); i++){
+        cout << v[i];
+    }
+    cout << endl;
+    reverse(v.begin(), v.end());
+    int decimal = 1;
+    int total = 0;
+    for (auto& it : v)
+    {
+        total += ((int)it - '0' )* decimal;
+        decimal *= 10;
+    }
+    return total;
+}
 
 
 

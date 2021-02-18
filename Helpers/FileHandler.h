@@ -5,7 +5,6 @@
 #include <fstream>
 #include <map>
 #include <cstring>
-#include <bitset>
 
 using namespace std;
 
