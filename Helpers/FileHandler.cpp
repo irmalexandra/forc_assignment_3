@@ -18,20 +18,22 @@ void write_to_file(const string& filename, map<char, int> *frequency_table, map<
     bitset<256>* encoding_key;
     int char_count = frequency_table->size();
     int length;
-    ofstream output_file;
-    output_file.open (filename, ios::out | ios::binary);
+    FILE * output_file;
+    output_file = fopen ("out_thing.txt", "wb");
 
-//    for(auto const& [key, value]:*key_map){
-//        length = strlen(value);
-//        encoding_key = new bitset<256>(stoi(value));
-//        output_file << key << " ";
+    for(auto const& [key, value]:*key_map){
+        length = strlen(value);
+        int binary_value = convert_char_arr_to_binary(value);
+        encoding_key = new bitset<256>(binary_value);
+
+        fwrite(value, 1, length, output_file);
 //        for (int i = 0; i < length; i++){
-//            output_file << encoding_key[255-i];
+//            output_file << encoding_key[i];
 //        }
-//    }
-    output_file << '\\' << endl << endl;
+    }
+//    output_file << '\\' << endl << endl;
 
-//    delete encoding_key;
+    delete encoding_key;
 
 }
 

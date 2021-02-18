@@ -27,7 +27,7 @@ int main(int argC, char *argv[]) {
     auto frequency_table = make_frequency_table(data);
     auto root = build_tree(*frequency_table);
     map <char, char*>* key_map = make_compression_keys(root);
-    string extension = "out.txt";
+    string extension = "out.wav";
     string out_file_name = file_to_read.replace(file_to_read.size()-extension.size(), extension.size(), extension);
     write_to_file(out_file_name, frequency_table, key_map);
 
