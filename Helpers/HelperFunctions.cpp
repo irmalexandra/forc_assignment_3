@@ -61,8 +61,6 @@ void make_compression_keys(Node* current_node, char *key, map<char, char*> *key_
     (*depth)--;
 }
 
-
-
 map<char, char*>* make_compression_keys(Node *root){
     auto *key_map = new map<char, char*>;
     char *key = new char[256]{'\0'};

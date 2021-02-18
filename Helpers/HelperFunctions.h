@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <algorithm>
 #include "../Classes/Node.h"
 #include "../Classes/Data.h"
 
