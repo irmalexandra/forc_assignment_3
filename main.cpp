@@ -6,8 +6,7 @@
 #include "Classes/HuffmanEncoder.h"
 #include "Helpers/HelperFunctions.h"
 #include "Helpers/FileHandler.h"
-
-
+#include "Classes/Compressor.h"
 
 using namespace std;
 
@@ -39,7 +38,7 @@ int main(int argC, char *argv[]) {
     }
 
 
-    if(!decompress){
+    if(!uncompress){
         ifstream fileIn (file_to_read);
         auto data = read_from_file(file_to_read);
 
