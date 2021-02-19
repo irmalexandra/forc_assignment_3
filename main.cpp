@@ -1,8 +1,9 @@
 #include <iostream>
-#include <fstream>
-#include <cstring>
-
+#include "Classes/Decompressor.h"
 #include "Classes/Node.h"
+#include "Classes/HuffmanDecoder.h"
+#include "Classes/HuffmanEncoder.h"
+#include "Classes/HuffmanEncoder.h"
 #include "Helpers/HelperFunctions.h"
 #include "Helpers/FileHandler.h"
 
@@ -14,16 +15,20 @@ using namespace std;
 
 int main(int argC, char *argv[]) {
     string file_to_read;
-    bool decompress;
+    bool uncompress;
     string output_file;
 
     if(argC > 2){
-        string stupif_stuff = argv[1];
-        if(argv[1] == "-u"){
-            decompress = true;
+
+        if((string) argv[1] == "-u" || (string) argv[1] == "-U"){
+            uncompress = true;
+        }
+        else if((string) argv[1] == "-c" || (string) argv[1] == "-C"){
+            uncompress = false;
         }
         else{
-            decompress = false;
+            cout << "ERROR: UNKNOWN ARGUMENT" << endl;
+            return -1;
         }
         file_to_read = argv[2];
         output_file = argv[3];
@@ -47,52 +52,12 @@ int main(int argC, char *argv[]) {
 
     }
     else{
-        string myText;
-
-        // Read from the text file
-        ifstream MyReadFile(file_to_read, ios::in|ios::binary);
-        MyReadFile.seekg(ios::beg);
-        map<char, int> found_keys;
-        vector<string> found_compressed_strings;
-        bool is_key = true;
-        bool is_head = true;
-        char key;
-        vector<char> value;
-        // Use a while loop together with the getline() function to read the file line by line
-        while (getline (MyReadFile, myText)) {
-            // Output the text from the file
-            // cout << myText << endl;
-            if(is_head){
-                for(char & i : myText){
-                    if(is_head){
-                        if(i == '\n' || i == '\r'){
-                            found_keys[key] = VectorToInt(value);
-                            is_key = true;
-                            value.clear();
-                        }
-                        else if(is_key){
-                            key = i;
-                            is_key = false;
-                        }
-                        else if(i != ' '){
-                            value.push_back(i);
-                        }
-                    }
-
-                    if(i == '\\'){
-                        is_head = false;
-                    }
-                }
-            }
-            else{
-                found_compressed_strings.push_back(myText);
-            }
-        }
+        auto * decompressor = new Decompressor;
+        auto * decoder = new HuffmanDecoder;
+        decoder->populate_from_file(file_to_read);
+        decompressor->build_key_tree(decoder->get_key_map());
     }
 
 
     return 0;
 }
-// 0x30 =  0 0 1 1 0 0 0 0
-// 0x35 = 0 0 1 1 0 1 0 1
-// 0x39 = 0 0 1 1 1 0 0 1

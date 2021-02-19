@@ -37,3 +37,19 @@ ostream& operator<< (ostream& out, const Node *node){
     }
     return out;
 }
+
+Node::Node() {
+    this->right = nullptr;
+    this->left = nullptr;
+    this->data = new Data();
+}
+
+void Node::set_left(Node* node) {
+    this->left = node;
+}
+
+void Node::set_right(Node *node) {
+    this->right = node;
+}
+
+

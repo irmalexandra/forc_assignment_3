@@ -4,7 +4,9 @@ Data::Data(int freq, char value){
     this->freq = freq;
     this->value = value;
 }
-
+Data::Data(char value) {
+    this->value = value;
+}
 
 
 ostream& operator<< (ostream& out, const Data *data){
@@ -21,3 +23,15 @@ int Data::get_frequency() {
 char Data::get_value() {
     return this->value;
 }
+
+Data::Data() {
+    this->value = NULL;
+    this->freq = NULL;
+}
+
+void Data::set_value(char value) {
+    this->value = value;
+
+}
+
+

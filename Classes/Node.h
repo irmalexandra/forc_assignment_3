@@ -9,9 +9,12 @@ class Node{
 public:
     Node(Node *left, Node *right);
     Node(Data *data);
+    Node();
 
     Node* get_left();
     Node* get_right();
+    void set_left(Node* node);
+    void set_right(Node* node);
 
     Data* get_data();
 

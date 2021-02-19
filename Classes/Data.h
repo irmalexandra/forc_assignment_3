@@ -7,9 +7,12 @@ using namespace std;
 
 class Data{
 public:
-    Data(int freq, char value = '\0');
+    explicit Data();
+    explicit Data(int freq, char value = '\0');
+    explicit Data(char value);
 
     int get_frequency();
+    void set_value(char value);
 
     char get_value();
 
