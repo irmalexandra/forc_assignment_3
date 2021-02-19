@@ -16,5 +16,6 @@ int VectorToInt(vector<char> v);
 Node* build_tree(map<char, int> frequency_table);
 
 map<char, char*>* make_compression_keys(Node *root);
+bool comparer(Node* first, Node* second);
 
 #endif //FORC_PA_3_HELPERFUNCTIONS_H

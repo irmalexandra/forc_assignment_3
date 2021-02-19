@@ -77,21 +77,5 @@ void write_bytes_from_arr(map<char, char*> *key_map){
 
     out_stream << byte;
     cout << "Byte written at end" << endl;
- /*
-//    test_out.open("binary_test.txt", ios::out | ios::binary | ios::app);
-//    int binary_value = 0;
-//    for(int i = 0; i < strlen(arr); i++){
-//        if(arr[i] == '0'){
-//            binary_value = (binary_value << 1) + 0;
-//            //test_out.write(0,1);
-//        }
-//        if(arr[i] == '1'){
-//            binary_value = (binary_value << 1) + 1;
-//            //test_out << write(1,1);
-//        }
-//    }
-//    test_out << endl;
-
-//    return binary_value;*/
 }
 
