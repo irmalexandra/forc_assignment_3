@@ -15,6 +15,7 @@ void Compressor::compress() {
     out_stream.open("test.txt", ios::binary|ios::trunc|ios::out);
 
     write_header(out_stream);
+    write_bytes(out_stream);
 
 
 
@@ -23,27 +24,34 @@ void Compressor::compress() {
 
 void Compressor::write_bytes(ofstream& out_stream) {
     char byte = 0;
-    int count = 0;
-    int keys_inserted = 0;
-    int number_of_keys = this->compression_info->key_map->size();
-    cout << "Number of Keys: " << number_of_keys << endl;
+    int byte_index = 0;
+    int bytes_inserted = 0;
+    int number_of_bytes = (this->compression_info->bit_count)/8;
+    cout << "Number of Keys: " << number_of_bytes << endl;
+    char* current_char;
+    char* current_value;
+    for(int x = 0; x < this->compression_info->file_content->size(); x++){
 
+        current_char = &this->compression_info->file_content->at(x);
 
-    for (auto const& [key,value]:*this->compression_info->key_map){
+        if(*current_char != '\r' && *current_char != '\n'){
+            cout << *current_char << " <-- curr char " << endl;
+            current_value = (*this->compression_info->key_map)[*current_char];
 
-        for (int i = 0; i < strlen(value); i++){
-            if(count == 8){
-                out_stream << byte;
-                cout << "Byte Written" << endl;
-                byte = 0;
-                count = 0;
+            for (int i = 0; i < strlen(current_value); i++){
+                if(byte_index == 8){
+                    out_stream << byte;
+                    bytes_inserted++;
+                    cout << "Byte Written" << endl;
+                    byte = 0;
+                    byte_index = 0;
 
-            }
-            if (value[i] == '1'){
-                if (keys_inserted == number_of_keys-1){
-                    cout << "Count is : " << count << endl;
-                    byte = byte | (1 << (7-count));
-                    count++;
+                }
+                if (current_value[i] == '1'){
+                    if (bytes_inserted == number_of_bytes){
+                        cout << "Count is : " << byte_index << endl;
+                        byte = byte | (1 << (7 - byte_index));
+                        byte_index++;
 
                 }
                 else{
@@ -52,23 +60,66 @@ void Compressor::write_bytes(ofstream& out_stream) {
                     count++;
                 }
 
-            }
-            if(value[i] == '0'){
-                if (keys_inserted == number_of_keys-1){
-                    cout << "Count is : " << count << endl;
-                    byte = byte | (0 << (7-count));
-                    count++;
                 }
-                else{
-                    byte = byte << 1;
-                    count++;
+                if(current_value[i] == '0'){
+                    if (bytes_inserted == number_of_bytes){
+                        cout << "Count is : " << byte_index << endl;
+                        byte = byte | (0 << (7 - byte_index));
+                        byte_index++;
+                    }
+                    else{
+                        byte = byte << 1;
+                        byte_index++;
+                    }
                 }
-
             }
         }
-        keys_inserted++;
 
     }
+    delete current_char;
+    delete current_value;
+
+
+//    for (auto const& [key,value]:*this->compression_info->key_map){
+//
+//        for (int i = 0; i < strlen(value); i++){
+//            if(byte_index == 8){
+//                out_stream << byte;
+//                cout << "Byte Written" << endl;
+//                byte = 0;
+//                byte_index = 0;
+//
+//            }
+//            if (value[i] == '1'){
+//                if (bytes_inserted == number_of_bytes-1){
+//                    cout << "Count is : " << byte_index << endl;
+//                    byte = byte | (1 << (7-byte_index));
+//                    byte_index++;
+//
+//                }
+//                else{
+//                    byte = byte << 1;
+//                    byte = byte | 1;
+//                    byte_index++;
+//                }
+//
+//            }
+//            if(value[i] == '0'){
+//                if (bytes_inserted == number_of_bytes-1){
+//                    cout << "Count is : " << byte_index << endl;
+//                    byte = byte | (0 << (7-byte_index));
+//                    byte_index++;
+//                }
+//                else{
+//                    byte = byte << 1;
+//                    byte_index++;
+//                }
+//
+//            }
+//        }
+//        bytes_inserted++;
+//
+//    }
 
     out_stream << byte;
     cout << "Byte written at end" << endl;

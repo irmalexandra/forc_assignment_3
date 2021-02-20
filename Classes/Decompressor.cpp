@@ -21,18 +21,13 @@ void Decompressor::build_tree_from_keys(deque<char> value, char key, Node* curre
     }
     value.pop_front();
     build_tree_from_keys(value, key, new_node);
-
 };
 
-
-
 Node Decompressor::build_key_tree(const map<char, deque<char>>& keys) {
-
-
     for(auto key : keys){
         cout << key.first << endl;
        build_tree_from_keys(key.second, key.first, this->key_map_root);
-    };
+    }
 
     return Node(nullptr, nullptr);
 }
