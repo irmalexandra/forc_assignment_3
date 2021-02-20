@@ -53,12 +53,12 @@ void Compressor::write_bytes(ofstream& out_stream) {
                         byte = byte | (1 << (7 - byte_index));
                         byte_index++;
 
-                }
-                else{
-                    byte = byte << 1;
-                    byte = byte | 1;
-                    count++;
-                }
+                    }
+                    else{
+                        byte = byte << 1;
+                        byte = byte | 1;
+                        byte_index++;
+                    }
 
                 }
                 if(current_value[i] == '0'){

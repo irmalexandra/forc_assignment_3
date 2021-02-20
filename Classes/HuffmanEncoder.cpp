@@ -88,5 +88,5 @@ map<char, int>* HuffmanEncoder::get_frequency_table(){
 }
 
 CompressionInfo HuffmanEncoder::get_compression_info(){
-   return CompressionInfo(this->frequency_table, this->compression_keys);
+   return CompressionInfo(this->frequency_table, this->compression_keys, this->file_content);
 }
