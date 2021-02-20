@@ -15,12 +15,19 @@
 
 struct CompressionInfo{
   CompressionInfo() = default;
+
+  CompressionInfo(map<char, int>* frequency_table, map<char, char*>* key_map){
+      this->frequency_table = frequency_table;
+      this->key_map = key_map;
+  }
+
   CompressionInfo(map<char, int>* frequency_table, map<char, char*>* key_map, vector<char>* file_content){
       this->frequency_table = frequency_table;
       this->key_map = key_map;
       this->file_content = file_content;
       this->count_bits();
   }
+
   ~CompressionInfo(){
       delete this->frequency_table;
       delete this->key_map;

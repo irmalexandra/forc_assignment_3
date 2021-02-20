@@ -39,7 +39,7 @@ int main(int argC, char *argv[]) {
 
 
     if(!uncompress){
-        ifstream fileIn (file_to_read);
+//        ifstream fileIn (file_to_read);
         auto data = read_from_file(file_to_read);
 
         auto encoder = new HuffmanEncoder(data);
