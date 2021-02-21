@@ -56,7 +56,7 @@ int main(int argC, char *argv[]) {
 
         decoder.decode(in_stream);
         auto decompressor = Decompressor(decoder.get_decode_info());
-        ofstream out_stream(output_file);
+        ofstream out_stream(output_file, ios::binary);
         decompressor.decompress(in_stream, out_stream);
 
         in_stream.close();

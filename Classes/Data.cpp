@@ -1,6 +1,6 @@
 #include "Data.h"
 
-Data::Data(int freq, char value){
+Data::Data(unsigned long freq, char value){
     this->freq = freq;
     this->value = value;
 }
@@ -16,7 +16,7 @@ ostream& operator<< (ostream& out, const Data *data){
     return out;
 }
 
-int Data::get_frequency() {
+unsigned long Data::get_frequency() {
     return this->freq;
 }
 

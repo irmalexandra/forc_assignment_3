@@ -78,14 +78,11 @@ void HuffmanDecoder::read_head(ifstream &stream) {
                 is_key = false;
             }
             else if(current_char == '\n'){
-//                (*this->compression_keys)[key] = value;
                 this->compression_keys->insert(pair<char, deque<char>>(key, value));
-//             *this->compression_keys).insert(pair<char, deque<char>>(key,value));
                 is_key = true;
                 value.clear();
             }
             else if(current_char != ' '){
-                cout << current_char << " <--- " << endl;
                 value.push_back(current_char);
             }
         }
@@ -94,8 +91,13 @@ void HuffmanDecoder::read_head(ifstream &stream) {
         }
 
         if(current_char == '\\' && is_head){
-            is_head = false;
-            is_bit_count = true;
+            auto position = stream.tellg();
+            if((char)stream.get() == '\n'){
+                is_head = false;
+                is_bit_count = true;
+            }
+            stream.seekg(position);
+
         }
         else if(current_char == '\\'){
             break;

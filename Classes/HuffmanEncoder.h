@@ -16,7 +16,7 @@
 struct EncodeInfo{
   EncodeInfo() = default;
 
-  EncodeInfo(map<char, int>* frequency_table, map<char, char*>* compression_keys, vector<char>* file_content){
+  EncodeInfo(map<char, unsigned long>* frequency_table, map<char, char*>* compression_keys, vector<char>* file_content){
       this->frequency_table = frequency_table;
       this->compression_keys = compression_keys;
       this->file_content = file_content;
@@ -35,7 +35,7 @@ struct EncodeInfo{
       }
   }
 
-  map<char, int>* frequency_table = nullptr;
+  map<char, unsigned long>* frequency_table = nullptr;
   map<char, char*>* compression_keys = nullptr;
   vector<char>* file_content = nullptr;
   unsigned int bit_count = 0;
@@ -52,7 +52,7 @@ public:
 private:
     Node* root = nullptr;
     vector<char>* file_content = nullptr;
-    map<char, int>* frequency_table = nullptr;
+    map<char, unsigned long>* frequency_table = nullptr;
     map<char, char*>* compression_keys = nullptr;
     void make_frequency_table();
     void build_tree();

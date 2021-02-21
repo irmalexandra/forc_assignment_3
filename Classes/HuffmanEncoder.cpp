@@ -15,8 +15,7 @@ void HuffmanEncoder::encode(vector<char> *file_content){
 }
 
 void HuffmanEncoder::make_frequency_table() {
-    auto* frequency_map = new map<char, int>;
-
+    auto* frequency_map = new map<char, unsigned long>;
     for (auto const letter:*this->file_content){
         // Originally we ignored newlines but we figured the compression would be better if we encoded them as well.
         (*frequency_map)[letter] += 1;
@@ -46,7 +45,7 @@ void HuffmanEncoder::build_tree() {
 }
 
 void HuffmanEncoder::make_compression_keys(Node* current_node, char *key, map<char, char*> *key_map, int *depth){
-    if (current_node->get_data()->get_value() != '\0'){
+    if (current_node->get_left() == nullptr && current_node->get_right() == nullptr){
         char* temp_key = new char[256];
         copy(key, key+256, temp_key);
         key_map->insert(std::pair<char, char*>(current_node->get_data()->get_value(), temp_key));
