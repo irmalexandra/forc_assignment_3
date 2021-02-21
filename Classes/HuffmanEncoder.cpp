@@ -70,9 +70,6 @@ void HuffmanEncoder::make_compression_keys() {
     auto* depth = new int(0);
 
     make_compression_keys(root, key, this->compression_keys, depth);
-    for (auto const& key: *this->compression_keys){
-        cout << "Key: " << key.first << " Value: " << key.second << endl;
-    }
     delete depth;
 }
 
