@@ -9,6 +9,7 @@ vector <char>* read_from_file(const string& filename) {
     while (input_file.get(byte)) {
         data->push_back(byte);
     }
+    input_file.close();
     return data;
 }
 

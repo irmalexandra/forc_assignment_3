@@ -6,6 +6,7 @@
 
 #ifndef FORC_PA_3_HUFFMANENCODER_H
 #define FORC_PA_3_ENCODER_H
+#include "HuffmanDecoder.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ public:
     void decompress(ifstream& in_stream,  ofstream& out_stream);
 
 private:
-    Node* key_map_root;
+    DecodeInfo* decode_info = nullptr;
 };
 
 

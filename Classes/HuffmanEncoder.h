@@ -16,9 +16,9 @@
 struct EncodeInfo{
   EncodeInfo() = default;
 
-  CompressionInfo(map<char, int>* frequency_table, map<char, char*>* key_map, vector<char>* file_content){
+  EncodeInfo(map<char, int>* frequency_table, map<char, char*>* compression_keys, vector<char>* file_content){
       this->frequency_table = frequency_table;
-      this->key_map = key_map;
+      this->compression_keys = compression_keys;
       this->file_content = file_content;
       this->count_bits();
   }
@@ -31,12 +31,12 @@ struct EncodeInfo{
 
   void count_bits(){
       for (auto freq:*this->frequency_table){
-          this->bit_count += freq.second * strlen(this->key_map->find(freq.first)->second);
+          this->bit_count += freq.second * strlen(this->compression_keys->find(freq.first)->second);
       }
   }
 
   map<char, int>* frequency_table = nullptr;
-  map<char, char*>* key_map = nullptr;
+  map<char, char*>* compression_keys = nullptr;
   vector<char>* file_content = nullptr;
   unsigned int bit_count = 0;
 };
@@ -44,18 +44,20 @@ struct EncodeInfo{
 class HuffmanEncoder {
 public:
     HuffmanEncoder() = default;
-    explicit HuffmanEncoder(vector<char>* file_content);
-
     ~HuffmanEncoder();
 
     void encode(vector<char> *file_content);
     EncodeInfo get_compression_info();
 
 private:
-    Node* root;
-    vector<char>* file_content;
-    map<char, int>* frequency_table;
-    map<char, char*>* compression_keys;
+    Node* root = nullptr;
+    vector<char>* file_content = nullptr;
+    map<char, int>* frequency_table = nullptr;
+    map<char, char*>* compression_keys = nullptr;
+    void make_frequency_table();
+    void build_tree();
+    void make_compression_keys();
+    void make_compression_keys(Node* current_node, char *key, map<char, char*> *key_map, int *depth);
 };
 
 

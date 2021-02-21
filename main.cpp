@@ -39,15 +39,12 @@ int main(int argC, char *argv[]) {
 
 
     if(!uncompress){
-//        ifstream fileIn (file_to_read);
+
         auto data = read_from_file(file_to_read);
 
-        auto encoder = new HuffmanEncoder(data);
-
-        encoder->make_frequency_table();
-        encoder->build_tree();
-        encoder->make_compression_keys();
-        auto compression_info = encoder->get_compression_info();
+        auto encoder = HuffmanEncoder();
+        encoder.encode(data);
+        auto encode_info = encoder.get_compression_info();
 
         auto compressor = Compressor(&encode_info);
         compressor.compress(output_file);

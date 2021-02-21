@@ -134,7 +134,7 @@ void Compressor::write_header(ofstream& out_stream) {
 
 
     cout << "KEY MAP" << endl;
-    for (auto data:*this->compression_info->key_map){
+    for (auto data:*this->compression_info->compression_keys){
         out_stream << data.first << " " << data.second << endl;
 
         cout << "Key : "<< data.first << endl;

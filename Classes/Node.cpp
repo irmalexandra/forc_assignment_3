@@ -24,7 +24,7 @@ Node * Node::get_right() {
     return this->right;
 }
 
-Data* Node::get_data() {
+Data* Node::get_data(){
     return this->data;
 }
 
