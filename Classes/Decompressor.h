@@ -12,9 +12,10 @@ using namespace std;
 class Decompressor {
 
 public:
-    Decompressor();
-    void build_tree_from_keys(deque<char> value, char key, Node* current_node);
-    Node build_key_tree(const map<char, deque<char>>& keys);
+    Decompressor() = default;
+    explicit Decompressor(DecodeInfo* decode_info);
+    ~Decompressor();
+    void decompress(ifstream& in_stream,  ofstream& out_stream);
 
 private:
     Node* key_map_root;

@@ -52,4 +52,8 @@ void Node::set_right(Node *node) {
     this->right = node;
 }
 
+void Node::set_data(Data* data) {
+    this->data = data;
+}
+
 

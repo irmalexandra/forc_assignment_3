@@ -79,14 +79,6 @@ void HuffmanEncoder::make_compression_keys() {
     delete depth;
 }
 
-map<char, char*>* HuffmanEncoder::get_compression_keys(){
-    return this->compression_keys;
-}
-
-map<char, int>* HuffmanEncoder::get_frequency_table(){
-    return this->frequency_table;
-}
-
-CompressionInfo HuffmanEncoder::get_compression_info(){
-   return CompressionInfo(this->frequency_table, this->compression_keys, this->file_content);
+EncodeInfo HuffmanEncoder::get_compression_info(){
+   return EncodeInfo(this->frequency_table, this->compression_keys, this->file_content);
 }

@@ -49,19 +49,21 @@ int main(int argC, char *argv[]) {
         encoder->make_compression_keys();
         auto compression_info = encoder->get_compression_info();
 
-        auto compressor = Compressor(&compression_info);
-        compressor.compress();
-
-        /*string extension = "out.wav";
-        string out_file_name = file_to_read.replace(file_to_read.size()-extension.size(), extension.size(), extension);
-        write_to_file(out_file_name, compression_info.frequency_table, compression_info.key_map);*/
+        auto compressor = Compressor(&encode_info);
+        compressor.compress(output_file);
 
     }
     else{
-        auto * decompressor = new Decompressor;
-        auto * decoder = new HuffmanDecoder;
-        decoder->populate_from_file(file_to_read);
-        decompressor->build_key_tree(decoder->get_key_map());
+        ifstream in_stream(file_to_read, ios::binary);
+        auto decoder = HuffmanDecoder();
+
+        decoder.decode(in_stream);
+        auto decompressor = Decompressor(decoder.get_decode_info());
+        ofstream out_stream(output_file);
+        decompressor.decompress(in_stream, out_stream);
+
+        in_stream.close();
+
     }
 
 

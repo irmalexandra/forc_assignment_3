@@ -17,6 +17,7 @@ public:
     void set_right(Node* node);
 
     Data* get_data();
+    void set_data(Data* data);
 
     virtual ~Node();
 
@@ -26,7 +27,6 @@ private:
     Data *data = nullptr;
     Node *left = nullptr;
     Node *right = nullptr;
-    Node *parent;
 };
 
 #endif //FORC_PA_3_NODE_H

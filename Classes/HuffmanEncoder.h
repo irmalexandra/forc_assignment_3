@@ -13,8 +13,8 @@
 #include "../Classes/Data.h"
 #include "../Helpers/HelperFunctions.h"
 
-struct CompressionInfo{
-  CompressionInfo() = default;
+struct EncodeInfo{
+  EncodeInfo() = default;
 
   CompressionInfo(map<char, int>* frequency_table, map<char, char*>* key_map, vector<char>* file_content){
       this->frequency_table = frequency_table;
@@ -23,11 +23,11 @@ struct CompressionInfo{
       this->count_bits();
   }
 
-  ~CompressionInfo(){
-      delete this->frequency_table;
-      delete this->key_map;
-      delete this->file_content;
-  }
+//  ~EncodeInfo(){ TODO:fix?
+//      delete this->file_content;
+//      delete this->compression_keys;
+//      delete[] this->frequency_table;
+//  }
 
   void count_bits(){
       for (auto freq:*this->frequency_table){
@@ -48,14 +48,8 @@ public:
 
     ~HuffmanEncoder();
 
-    void make_frequency_table();
-    void build_tree();
-    void make_compression_keys(Node* current_node, char* key, map<char, char*>* key_map, int* depth);
-    void make_compression_keys();
-
-    map<char, char*>* get_compression_keys();
-    map<char, int>* get_frequency_table();
-    CompressionInfo get_compression_info();
+    void encode(vector<char> *file_content);
+    EncodeInfo get_compression_info();
 
 private:
     Node* root;

@@ -6,18 +6,52 @@
 #include <fstream>
 #include <map>
 #include <deque>
+#include "Node.h"
 #include "../Helpers/HelperFunctions.h"
 
 using namespace std;
 
+struct DecodeInfo{
+public:
+    DecodeInfo(map<char, deque<char>>* compression_keys, int* bit_count, Node* root){
+        this->bit_count = bit_count;
+        this->compression_keys = compression_keys;
+        this->root = root;
+    }
+    ~DecodeInfo(){
+        delete this->compression_keys;
+        delete this->root;
+        delete this->bit_count;
+    }
+    Node* get_root(){
+        return this->root;
+    }
+    int* get_bit_count(){
+        return this->bit_count;
+    }
+private:
+    map<char, deque<char>>*compression_keys;
+    int* bit_count = 0;
+    Node* root;
+};
+
 class HuffmanDecoder {
 public:
-    void populate_from_file(string file_name);
-    vector<string> get_compressed_strings();
-    map<char, deque<char>> get_key_map();
+    HuffmanDecoder() = default;
+    ~HuffmanDecoder();
+
+    DecodeInfo* get_decode_info();
+
+    void decode(ifstream& stream);
+
 private:
-    map<char, deque<char>> key_map;
-    vector<string> compressed_strings;
+    Node* root = nullptr;
+    vector<char>* file_content = nullptr;
+    map<char, deque<char>>* compression_keys = nullptr;
+    int* bit_count = nullptr;
+    void build_tree_from_keys(deque<char> value, char key, Node* current_node);
+    void read_head(ifstream& stream);
+    void make_decode_tree();
 };
 
 

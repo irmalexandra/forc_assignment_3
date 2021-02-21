@@ -10,12 +10,12 @@
 class Compressor {
 public:
     Compressor() = default;
-    explicit Compressor(CompressionInfo* compression_info);
+    explicit Compressor(EncodeInfo* compression_info);
     ~Compressor();
-    void compress();
+    void compress(string file_name);
 
 private:
-    CompressionInfo* compression_info;
+    EncodeInfo* compression_info;
     void write_bytes(ofstream& out_stream);
     void write_header(ofstream& out_stream);
 };
