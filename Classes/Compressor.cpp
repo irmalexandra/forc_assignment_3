@@ -12,12 +12,10 @@ Compressor::~Compressor() {
 
 void Compressor::compress(string file_name) {
     ofstream out_stream;
-    out_stream.open("test.txt", ios::binary|ios::trunc|ios::out);
+    out_stream.open(file_name, ios::binary|ios::trunc|ios::out);
 
     write_header(out_stream);
     write_bytes(out_stream);
-
-
 
     out_stream.close();
 }
@@ -143,6 +141,7 @@ void Compressor::write_header(ofstream& out_stream) {
 
     cout << "NUMBER OF BITS" << endl;
     cout << this->compression_info->bit_count << endl;
+    out_stream << "\\" << endl;
     out_stream << this->compression_info->bit_count << endl;
     out_stream << "\\" << endl;
 }

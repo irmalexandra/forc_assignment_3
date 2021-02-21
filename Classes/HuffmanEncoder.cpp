@@ -66,7 +66,7 @@ void HuffmanEncoder::make_compression_keys(Node* current_node, char *key, map<ch
 };
 
 void HuffmanEncoder::make_compression_keys() {
-    auto *key_map = new map<char, char*>;
+    this->compression_keys = new map<char, char*>;
     char *key = new char[256]{'\0'};
     auto* depth = new int(0);
 
@@ -74,7 +74,6 @@ void HuffmanEncoder::make_compression_keys() {
     for (auto const& key: *this->compression_keys){
         cout << "Key: " << key.first << " Value: " << key.second << endl;
     }
-    this->compression_keys = key_map;
     delete depth;
 }
 
