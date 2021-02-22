@@ -23,6 +23,9 @@ bool is_bit_set(char byte, int k){
     }
 }
 
+
+
+
 void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
     cout << "THIS IS WHAT I WANT TO SEE" << endl;
     auto byte = in_stream.get();

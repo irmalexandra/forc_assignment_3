@@ -44,6 +44,7 @@ public:
     DecodeInfo* get_decode_info();
 
     void decode(ifstream& stream);
+    void set_bit(char& byte, char& bit_char, int& byte_index, bool is_overflow);
 
 private:
     Node* root = nullptr;
