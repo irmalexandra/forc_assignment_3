@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <cmath>
 #include <deque>
 #include "Node.h"
 #include "../Helpers/HelperFunctions.h"

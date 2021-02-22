@@ -56,53 +56,151 @@ DecodeInfo*::HuffmanDecoder::get_decode_info() {
     return new DecodeInfo(this->compression_keys, this->bit_count, this->root);
 }
 
-
 void HuffmanDecoder::read_head(ifstream &stream) {
 
     bool is_key = true;
-    bool is_head = true;
-    bool is_bit_count = false;
     char key;
+    int value_length;
     char current_char;
     this->compression_keys = new map<char, deque<char>>;
     vector<char> bit_count;
     deque<char> value;
+    vector<char> key_container;
 
-    // Use a while loop together with the getline() function to read the file line by line
-    while (!stream.eof()) {
-        current_char = (char)stream.get();
-
-        if(is_head){
-            if(is_key){
-                key = current_char;
-                is_key = false;
-            }
-            else if(current_char == '\n'){
-                this->compression_keys->insert(pair<char, deque<char>>(key, value));
-                is_key = true;
-                value.clear();
-            }
-            else if(current_char != ' '){
-                value.push_back(current_char);
-            }
-        }
-        else if(is_bit_count){
-            bit_count.push_back(current_char);
-        }
-
-        if(current_char == '\\' && is_head){
-            auto position = stream.tellg();
-            if((char)stream.get() == '\n'){
-                is_head = false;
-                is_bit_count = true;
-            }
-            stream.seekg(position);
-
-        }
-        else if(current_char == '\\'){
-            break;
-        }
+    current_char = (char)stream.get();
+    while(current_char != '\n'){
+        key_container.push_back(current_char);
+        current_char = (char) stream.get();
     }
+    int number_of_keys = stoi(string(key_container.begin(), key_container.end()));
+
+    current_char = (char) stream.get();
+
+    if(number_of_keys == 0){
+        number_of_keys = 256;
+    }
+    for(int i = 0; i < number_of_keys; i++){
+
+        key = current_char;
+        current_char = (char) stream.get();
+
+        value_length = current_char;
+        current_char = (char) stream.get();
+        if(i = 145){
+            cout;
+        }
+
+        for(int x = 0; x < value_length; x++){
+            bool thing = current_char & (1 << 7 - x);
+            if(thing){
+                value.push_back('1');
+            }
+            else{
+                value.push_back('0');
+            }
+            if(x % 8 == 0 && x != 0){
+                current_char = (char) stream.get();
+            }
+        }
+        this->compression_keys->insert(pair<char, deque<char>>(key, value));
+        value.clear();
+        current_char = (char) stream.get();
+
+    }
+
+    while(current_char != '\\'){
+        bit_count.push_back(current_char);
+        current_char = (char) stream.get();
+    }
+
     this->bit_count = new int(stoi(string(bit_count.begin(),bit_count.end())));
+
+//
+//    while (!stream.eof()) {
+//        current_char = (char)stream.get();
+//
+//        if(is_head){
+//            if(is_key){
+//                key = current_char;
+//                is_key = false;
+//            }
+//            else if(current_char == '\n'){
+//                this->compression_keys->insert(pair<char, deque<char>>(key, value));
+//                is_key = true;
+//                value.clear();
+//            }
+//            else if(current_char != ' '){
+//                value.push_back(current_char);
+//            }
+//        }
+//        else if(is_bit_count){
+//            bit_count.push_back(current_char);
+//        }
+//
+//        if(current_char == '\\' && is_head){
+//            auto position = stream.tellg();
+//            if((char)stream.get() == '\n'){
+//                is_head = false;
+//                is_bit_count = true;
+//            }
+//            stream.seekg(position);
+//
+//        }
+//        else if(current_char == '\\'){
+//            break;
+//        }
+//    }
+//    this->bit_count = new int(stoi(string(bit_count.begin(),bit_count.end())));
+
 }
+
+
+//void HuffmanDecoder::read_head(ifstream &stream) {
+//
+//    bool is_key = true;
+//    bool is_head = true;
+//    bool is_bit_count = false;
+//    char key;
+//    char current_char;
+//    this->compression_keys = new map<char, deque<char>>;
+//    vector<char> bit_count;
+//    deque<char> value;
+//
+//    // Use a while loop together with the getline() function to read the file line by line
+//    while (!stream.eof()) {
+//        current_char = (char)stream.get();
+//
+//        if(is_head){
+//            if(is_key){
+//                key = current_char;
+//                is_key = false;
+//            }
+//            else if(current_char == '\n'){
+//                this->compression_keys->insert(pair<char, deque<char>>(key, value));
+//                is_key = true;
+//                value.clear();
+//            }
+//            else if(current_char != ' '){
+//                value.push_back(current_char);
+//            }
+//        }
+//        else if(is_bit_count){
+//            bit_count.push_back(current_char);
+//        }
+//
+//        if(current_char == '\\' && is_head){
+//            auto position = stream.tellg();
+//            if((char)stream.get() == '\n'){
+//                is_head = false;
+//                is_bit_count = true;
+//            }
+//            stream.seekg(position);
+//
+//        }
+//        else if(current_char == '\\'){
+//            break;
+//        }
+//    }
+//    this->bit_count = new int(stoi(string(bit_count.begin(),bit_count.end())));
+//}
 

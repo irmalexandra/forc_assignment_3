@@ -5,6 +5,7 @@
 
 #include "HuffmanEncoder.h"
 #include "fstream"
+#include <cmath>
 
 
 class Compressor {

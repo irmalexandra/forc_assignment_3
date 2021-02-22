@@ -25,12 +25,10 @@ bool is_bit_set(char byte, int k){
 
 void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
     cout << "THIS IS WHAT I WANT TO SEE" << endl;
-    auto byte = 0;
+    auto byte = in_stream.get();
     Node* current_node = this->decode_info->get_root();
-    in_stream.get();
     int bit_count = 0;
     while (!in_stream.eof() && bit_count < *this->decode_info->get_bit_count()){
-        byte = in_stream.get();
         for(int i = 0; i < 8; i++){
             if(current_node->get_left() == nullptr && current_node->get_right() == nullptr){
                 out_stream << current_node->get_data()->get_value();
@@ -48,9 +46,9 @@ void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
             }
             bit_count++;
         }
-
-
+        byte = in_stream.get();
     }
+    out_stream << current_node->get_data()->get_value();
 }
 
 

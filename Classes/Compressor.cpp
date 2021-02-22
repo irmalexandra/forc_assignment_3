@@ -71,14 +71,80 @@ void Compressor::write_bytes(ofstream& out_stream) {
 }
 
 void Compressor::write_header(ofstream& out_stream) {
-    for (auto data:*this->compression_info->compression_keys){
-        out_stream << data.first << " " << data.second << endl;
+    char byte = 0;
+    int bits_inserted = 0;
+    int key_length = 0;
+    int byte_index = 0;
+    out_stream << this->compression_info->compression_keys->size() << endl;
+    for (auto data:*this->compression_info->compression_keys) {
+        key_length = strlen(data.second);
+
+        cout << "value is: " << data.second << " len is " << key_length << endl;
+        cout << "read " << strlen(data.second) << " ?" << endl;
+        cout << "data" << data.first << endl;
+
+        out_stream << data.first;
+        out_stream << (char) key_length; // length of "value"
+
+        for (int i = 0; i < key_length; i++) {
+            set_bit(byte, data.second[i], byte_index, byte_index == key_length);
+            byte_index++;
+            if (byte_index == 8 || byte_index == key_length) {
+                byte = byte << (8 - key_length);
+                out_stream << (byte);
+                bits_inserted++;
+                byte = 0;
+                byte_index = 0;
+            }
+        }
+        byte = byte << ((key_length-1)-byte_index);
+        out_stream << (byte);
+        cout << "byte is " << byte << endl;
     }
 
-    out_stream << "\\" << endl;
-    out_stream << this->compression_info->bit_count << endl;
-    out_stream << "\\" << endl;
+    out_stream << this->compression_info->bit_count;
+    out_stream << "\\";
 }
+
+//void Compressor::write_header(ofstream& out_stream) {
+//    char byte = 0;
+//    int bits_inserted = 0;
+//    int key_length;
+//    int
+//    int byte_index = 0;
+//    out_stream << this->compression_info->compression_keys->size() << endl;
+//    for (auto data:*this->compression_info->compression_keys){
+//        length = strlen(data.second);
+//
+//        cout << "value is: " << data.second << " len is " << length << endl;
+//        cout << "read " << strlen(data.second) << " ?" << endl;
+//        cout << "data" << data.first << endl;
+//
+//        out_stream << data.first << " " << strlen(data.second) << " ";
+//        for(int i = 0; i < length; i++){
+//            set_bit(byte, data.second[i], byte_index, bits_inserted == length);
+//            byte_index++;
+//            if (byte_index == 8){
+//                out_stream << byte;
+//                bits_inserted++;
+//                byte = 0;
+//                byte_index = 0;
+//            }
+//        }
+//        out_stream << endl;
+//    }
+//
+//    out_stream << "\\" << endl;
+//    out_stream << this->compression_info->bit_count << endl;
+//    out_stream << "\\" << endl;
+//}
+
+
+/*void Compressor::write_header(ofstream& out_stream) {
+    for (auto data:*this->compression_info->compression_keys){
+        out_stream << data.first << " " << data.second << endl;
+    }*/
+
 void Compressor::write_header2(ofstream& out_stream) {
     int bytes_needed = 0;
     for (auto data:*this->compression_info->compression_keys){
