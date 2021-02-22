@@ -18,6 +18,8 @@ private:
     EncodeInfo* compression_info;
     void write_bytes(ofstream& out_stream);
     void write_header(ofstream& out_stream);
+    void write_header2(ofstream& out_stream);
+    void set_bit(char& byte, char& bit_char, int& byte_index, bool is_overflow);
 };
 
 

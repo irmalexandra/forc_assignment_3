@@ -20,86 +20,76 @@ void Compressor::compress(string file_name) {
     out_stream.close();
 }
 
+void Compressor::set_bit(char& byte, char& bit_char, int& byte_index, bool is_overflow){
+    if (bit_char == '1'){
+        if (is_overflow){
+            byte = byte | (1 << (7 - byte_index));
+        }
+        else{
+            byte = byte << 1;
+            byte = byte | 1;
+        }
+    }
+    if(bit_char == '0'){
+        if (is_overflow){
+            byte = byte | (0 << (7 - byte_index));
+        }
+        else{
+            byte = byte << 1;
+        }
+    }
+}
+
 void Compressor::write_bytes(ofstream& out_stream) {
     char byte = 0;
     int byte_index = 0;
     int bytes_inserted = 0;
     int number_of_bytes = (this->compression_info->bit_count)/8;
-//    cout << "Number of Keys: " << number_of_bytes << endl;
     char* current_char;
     char* current_value;
     for(int x = 0; x < this->compression_info->file_content->size(); x++){
 
         current_char = &this->compression_info->file_content->at(x);
-
-//        if(*current_char != '\r' && *current_char != '\n'){
-//        cout << *current_char << " <-- curr char " << endl;
         current_value = (*this->compression_info->compression_keys)[*current_char];
 
         for (int i = 0; i < strlen(current_value); i++){
+            set_bit(byte, current_value[i], byte_index, bytes_inserted == number_of_bytes);
+            byte_index++;
             if(byte_index == 8){
                 out_stream << byte;
                 bytes_inserted++;
-//                cout << "Byte Written" << endl;
                 byte = 0;
                 byte_index = 0;
-
-            }
-            if (current_value[i] == '1'){
-                if (bytes_inserted == number_of_bytes){
-//                    cout << "Count is : " << byte_index << endl;
-                    byte = byte | (1 << (7 - byte_index));
-                    byte_index++;
-
-                }
-                else{
-                    byte = byte << 1;
-                    byte = byte | 1;
-                    byte_index++;
-                }
-
-            }
-            if(current_value[i] == '0'){
-                if (bytes_inserted == number_of_bytes){
-//                    cout << "Count is : " << byte_index << endl;
-                    byte = byte | (0 << (7 - byte_index));
-                    byte_index++;
-                }
-                else{
-                    byte = byte << 1;
-                    byte_index++;
-                }
             }
         }
-//        }
 
     }
     delete current_char;
     delete current_value;
 
     out_stream << byte;
-//    cout << "Byte written at end" << endl;
 }
 
 void Compressor::write_header(ofstream& out_stream) {
-//    cout << "FREQUENCY TABLE" << endl;
-    for (auto data:*this->compression_info->frequency_table){
-//        cout << "Letter: " << data.first << endl;
-//        cout << "Frequency: " << data.second << endl;
-    }
-
-
-//    cout << "KEY MAP" << endl;
     for (auto data:*this->compression_info->compression_keys){
         out_stream << data.first << " " << data.second << endl;
-
-//        cout << "Key : "<< data.first << endl;
-//        cout << "Value : " << data.second << endl;
     }
 
-//    cout << "NUMBER OF BITS" << endl;
-//    cout << this->compression_info->bit_count << endl;
     out_stream << "\\" << endl;
     out_stream << this->compression_info->bit_count << endl;
+    out_stream << "\\" << endl;
+}
+void Compressor::write_header2(ofstream& out_stream) {
+    int bytes_needed = 0;
+    for (auto data:*this->compression_info->compression_keys){
+        bytes_needed = strlen(data.second)/8;
+        out_stream << data.first << " ";
+        for (int i = 0; i < strlen(data.second); i++){
+
+        }
+    }
+
+    out_stream << "\\" << endl;
+    out_stream << (long)this->compression_info->bit_count << endl;
     out_stream << "\\" << endl;
 }

@@ -31,7 +31,6 @@ void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
     int bit_count = 0;
     while (!in_stream.eof() && bit_count < *this->decode_info->get_bit_count()){
         byte = in_stream.get();
-//        cout << hex << byte << endl;
         for(int i = 0; i < 8; i++){
             if(current_node->get_left() == nullptr && current_node->get_right() == nullptr){
                 out_stream << current_node->get_data()->get_value();
