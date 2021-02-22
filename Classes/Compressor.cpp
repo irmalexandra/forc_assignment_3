@@ -90,16 +90,22 @@ void Compressor::write_header(ofstream& out_stream) {
             set_bit(byte, data.second[i], byte_index, byte_index == key_length);
             byte_index++;
             if (byte_index == 8 || byte_index == key_length) {
-                byte = byte << (8 - key_length);
+                byte = byte << (8 - byte_index);
+
                 out_stream << (byte);
                 bits_inserted++;
                 byte = 0;
                 byte_index = 0;
             }
         }
-        byte = byte << ((key_length-1)-byte_index);
-        out_stream << (byte);
-        cout << "byte is " << byte << endl;
+        if (key_length > 8){
+            byte = byte << ((key_length-1)-byte_index);
+            out_stream << (byte);
+            byte = 0;
+            byte_index = 0;
+            cout << "byte is " << byte << endl;
+        }
+
     }
 
     out_stream << this->compression_info->bit_count;

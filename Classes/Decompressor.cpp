@@ -27,13 +27,17 @@ bool is_bit_set(char byte, int k){
 
 
 void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
-    cout << "THIS IS WHAT I WANT TO SEE" << endl;
+
     auto byte = in_stream.get();
     Node* current_node = this->decode_info->get_root();
     int bit_count = 0;
     while (!in_stream.eof() && bit_count < *this->decode_info->get_bit_count()){
         for(int i = 0; i < 8; i++){
+            if (bit_count == 99){
+                cout << "thing";
+            }
             if(current_node->get_left() == nullptr && current_node->get_right() == nullptr){
+                cout << current_node->get_data()->get_value() << endl;
                 out_stream << current_node->get_data()->get_value();
                 current_node = this->decode_info->get_root();
             }

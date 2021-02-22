@@ -86,13 +86,10 @@ void HuffmanDecoder::read_head(ifstream &stream) {
 
         value_length = current_char;
         current_char = (char) stream.get();
-        if(i = 145){
-            cout;
-        }
 
         for(int x = 0; x < value_length; x++){
-            bool thing = current_char & (1 << 7 - x);
-            if(thing){
+            bool is_set = current_char & (1 << (7 - x));
+            if(is_set){
                 value.push_back('1');
             }
             else{
