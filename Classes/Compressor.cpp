@@ -79,19 +79,22 @@ void Compressor::write_header(ofstream& out_stream) {
     for (auto data:*this->compression_info->compression_keys) {
         key_length = strlen(data.second);
 
-        cout << "value is: " << data.second << " len is " << key_length << endl;
-        cout << "read " << strlen(data.second) << " ?" << endl;
-        cout << "data" << data.first << endl;
+//        cout << "value is: " << data.second << " len is " << key_length << endl;
+//        cout << "read " << strlen(data.second) << " ?" << endl;
+//        cout << "data" << data.first << endl;
 
         out_stream << data.first;
         out_stream << (char) key_length; // length of "value"
+//
+//        if(data.first == '8'){
+//            cout << "maybe";
+//        }
 
         for (int i = 0; i < key_length; i++) {
             set_bit(byte, data.second[i], byte_index, byte_index == key_length);
             byte_index++;
             if (byte_index == 8 || byte_index == key_length) {
                 byte = byte << (8 - byte_index);
-
                 out_stream << (byte);
                 bits_inserted++;
                 byte = 0;
@@ -99,16 +102,17 @@ void Compressor::write_header(ofstream& out_stream) {
             }
         }
         if (key_length > 8){
-            byte = byte << ((key_length-1)-byte_index);
+            byte = byte << (8-byte_index);
             out_stream << (byte);
             byte = 0;
             byte_index = 0;
-            cout << "byte is " << byte << endl;
+//            cout << "byte is " << byte << endl;
         }
 
     }
 
     out_stream << this->compression_info->bit_count;
+
     out_stream << "\\";
 }
 

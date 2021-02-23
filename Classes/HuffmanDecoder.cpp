@@ -21,11 +21,21 @@ void HuffmanDecoder::decode(ifstream &stream){
 }
 
 void HuffmanDecoder::build_tree_from_keys(deque<char> value, char key, Node* current_node){
+//    if(key == 'H'){
+//        cout << "yes";
+//    }
+//    if(key == 'q'){
+//        cout << "yes";
+//    }
+//    if(key == '8'){
+//        cout << "no";
+//    }
     if(value.empty()){
         auto data = new Data(key);
         current_node->set_data(data);
         return;
     }
+
 
     if(value[0] == '1'){
         value.pop_front();
@@ -58,10 +68,10 @@ DecodeInfo*::HuffmanDecoder::get_decode_info() {
 
 void HuffmanDecoder::read_head(ifstream &stream) {
 
-    bool is_key = true;
     char key;
     int value_length;
     char current_char;
+    int bits_inserted = 0;
     this->compression_keys = new map<char, deque<char>>;
     vector<char> bit_count;
     deque<char> value;
@@ -86,23 +96,42 @@ void HuffmanDecoder::read_head(ifstream &stream) {
 
         value_length = current_char;
         current_char = (char) stream.get();
+//        if(value_length >= 9){
+//            cout << endl;
+//        }
+//        if(key == '8'){
+//            cout << "plz";
+//        }
+        int number_of_bytes = ceil(value_length/8.0);
 
-        for(int x = 0; x < value_length; x++){
-            bool is_set = current_char & (1 << (7 - x));
-            if(is_set){
-                value.push_back('1');
+
+        for(int i = 0; i < number_of_bytes; i++){
+            for(int x = 0; x < 8; x++){
+
+                if(bits_inserted == value_length){
+                    break;
+                }
+                bits_inserted++;
+                bool is_set = current_char & (1 << (7 - x));
+
+                if(is_set){
+                    value.push_back('1');
+                }
+                else{
+                    value.push_back('0');
+                }
+
+                /*         if(x == 7 && value_length > 8){
+                             current_char = (char) stream.get();
+                         }*/
+
             }
-            else{
-                value.push_back('0');
-            }
-            if(x % 8 == 0 && x != 0){
-                current_char = (char) stream.get();
-            }
+            current_char = (char) stream.get();
         }
+        bits_inserted = 0;
+
         this->compression_keys->insert(pair<char, deque<char>>(key, value));
         value.clear();
-        current_char = (char) stream.get();
-
     }
 
     while(current_char != '\\'){
