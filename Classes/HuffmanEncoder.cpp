@@ -70,6 +70,6 @@ void HuffmanEncoder::make_compression_keys() {
     delete depth;
 }
 
-EncodeInfo HuffmanEncoder::get_compression_info(){
-   return EncodeInfo(this->frequency_table, this->compression_keys, this->file_content);
+EncodeInfo* HuffmanEncoder::get_encode_info(){
+   return new EncodeInfo(this->frequency_table, this->compression_keys, this->file_content);
 }

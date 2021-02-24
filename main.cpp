@@ -1,11 +1,7 @@
 #include <iostream>
-#include "Classes/Decompressor.h"
-#include "Classes/Node.h"
-#include "Classes/HuffmanDecoder.h"
-#include "Classes/HuffmanEncoder.h"
-#include "Classes/HuffmanEncoder.h"
-#include "Helpers/HelperFunctions.h"
+
 #include "Helpers/FileHandler.h"
+#include "Classes/Decompressor.h"
 #include "Classes/Compressor.h"
 
 using namespace std;
@@ -14,7 +10,7 @@ using namespace std;
 
 int main(int argC, char *argv[]) {
     string file_to_read;
-    bool uncompress;
+    bool uncompress = false;
     string output_file;
 
     if(argC > 2){
@@ -42,25 +38,23 @@ int main(int argC, char *argv[]) {
 
         auto data = read_from_file(file_to_read);
 
-        auto encoder = HuffmanEncoder();
-        encoder.encode(data);
-        auto encode_info = encoder.get_compression_info();
+        auto encoder = new HuffmanEncoder();
+        encoder->encode(data);
 
-        auto compressor = Compressor(&encode_info);
-        compressor.compress(output_file);
+        auto compressor = new Compressor(encoder->get_encode_info());
+        compressor->compress(output_file);
 
     }
     else{
         ifstream in_stream(file_to_read, ios::binary);
-        auto decoder = HuffmanDecoder();
+        auto decoder = new HuffmanDecoder();
+        decoder->decode(in_stream);
 
-        decoder.decode(in_stream);
-        auto decompressor = Decompressor(decoder.get_decode_info());
+        auto decompressor = new Decompressor(decoder->get_decode_info());
         ofstream out_stream(output_file, ios::binary);
-        decompressor.decompress(in_stream, out_stream);
+        decompressor->decompress(in_stream, out_stream);
 
         in_stream.close();
-
     }
 
 

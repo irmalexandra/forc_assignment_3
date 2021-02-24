@@ -20,6 +20,7 @@ public:
         this->root = root;
     }
     ~DecodeInfo(){
+        this->compression_keys->erase(this->compression_keys->begin(), this->compression_keys->end());
         delete this->compression_keys;
         delete this->root;
         delete this->bit_count;

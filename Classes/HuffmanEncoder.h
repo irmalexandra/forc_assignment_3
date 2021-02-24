@@ -25,7 +25,9 @@ struct EncodeInfo{
 
   ~EncodeInfo(){
       delete this->file_content;
+      this->compression_keys->erase(this->compression_keys->begin(), this->compression_keys->end());
       delete this->compression_keys;
+      this->frequency_table->erase(this->frequency_table->begin(), this->frequency_table->end());
       delete this->frequency_table;
   }
 
@@ -47,7 +49,7 @@ public:
     ~HuffmanEncoder();
 
     void encode(vector<char> *file_content);
-    EncodeInfo get_compression_info();
+    EncodeInfo* get_encode_info();
 
 private:
     Node* root = nullptr;

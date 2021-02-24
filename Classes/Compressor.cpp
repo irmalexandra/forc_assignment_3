@@ -45,12 +45,10 @@ void Compressor::write_bytes(ofstream& out_stream) {
     int byte_index = 0;
     int bytes_inserted = 0;
     int number_of_bytes = (this->encode_info->bit_count) / 8;
-    char* current_char;
-    char* current_value;
+    auto current_value = new char;
     for(int x = 0; x < this->encode_info->file_content->size(); x++){
 
-        current_char = &this->encode_info->file_content->at(x);
-        current_value = (*this->encode_info->compression_keys)[*current_char];
+        current_value = this->encode_info->compression_keys->find(this->encode_info->file_content->at(x))->second;
 
         for (int i = 0; i < strlen(current_value); i++){
             set_bit(byte, current_value[i], byte_index, bytes_inserted == number_of_bytes);
@@ -64,7 +62,6 @@ void Compressor::write_bytes(ofstream& out_stream) {
         }
 
     }
-    delete current_char;
     delete current_value;
 
     out_stream << byte;
