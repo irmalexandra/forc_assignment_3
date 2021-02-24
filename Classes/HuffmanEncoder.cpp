@@ -2,9 +2,7 @@
 
 
 HuffmanEncoder::~HuffmanEncoder() {
-    delete this->frequency_table;
-    delete this->compression_keys;
-    delete this->file_content;
+    delete this->root;
 }
 
 void HuffmanEncoder::encode(vector<char> *file_content){
@@ -49,7 +47,6 @@ void HuffmanEncoder::make_compression_keys(Node* current_node, char *key, map<ch
         char* temp_key = new char[256];
         copy(key, key+256, temp_key);
         key_map->insert(std::pair<char, char*>(current_node->get_data()->get_value(), temp_key));
-//        cout << "letter:" << current_node->get_data()->get_value() << " Key: " << temp_key << endl;
         return;
     }
     key[*depth] = '0';

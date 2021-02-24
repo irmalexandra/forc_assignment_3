@@ -32,7 +32,7 @@ public:
     }
 private:
     map<char, deque<char>>*compression_keys;
-    int* bit_count = 0;
+    int* bit_count = nullptr;
     Node* root;
 };
 
@@ -44,7 +44,6 @@ public:
     DecodeInfo* get_decode_info();
 
     void decode(ifstream& stream);
-    void set_bit(char& byte, char& bit_char, int& byte_index, bool is_overflow);
 
 private:
     Node* root = nullptr;
@@ -55,6 +54,5 @@ private:
     void read_head(ifstream& stream);
     void make_decode_tree();
 };
-
 
 #endif //FORC_PA_3_HUFFMANDECODER_H

@@ -2,12 +2,12 @@
 
 #include "Compressor.h"
 
-Compressor::Compressor(EncodeInfo* compression_info) {
-    this->compression_info = compression_info;
+Compressor::Compressor(EncodeInfo* encode_info) {
+    this->encode_info = encode_info;
 }
 
 Compressor::~Compressor() {
-    delete[] this->compression_info;
+    delete this->encode_info;
 }
 
 void Compressor::compress(string file_name) {
@@ -44,13 +44,13 @@ void Compressor::write_bytes(ofstream& out_stream) {
     char byte = 0;
     int byte_index = 0;
     int bytes_inserted = 0;
-    int number_of_bytes = (this->compression_info->bit_count)/8;
+    int number_of_bytes = (this->encode_info->bit_count) / 8;
     char* current_char;
     char* current_value;
-    for(int x = 0; x < this->compression_info->file_content->size(); x++){
+    for(int x = 0; x < this->encode_info->file_content->size(); x++){
 
-        current_char = &this->compression_info->file_content->at(x);
-        current_value = (*this->compression_info->compression_keys)[*current_char];
+        current_char = &this->encode_info->file_content->at(x);
+        current_value = (*this->encode_info->compression_keys)[*current_char];
 
         for (int i = 0; i < strlen(current_value); i++){
             set_bit(byte, current_value[i], byte_index, bytes_inserted == number_of_bytes);
@@ -75,20 +75,12 @@ void Compressor::write_header(ofstream& out_stream) {
     int bits_inserted = 0;
     int key_length = 0;
     int byte_index = 0;
-    out_stream << this->compression_info->compression_keys->size() << endl;
-    for (auto data:*this->compression_info->compression_keys) {
+    out_stream << this->encode_info->compression_keys->size() << endl;
+    for (auto data:*this->encode_info->compression_keys) {
         key_length = strlen(data.second);
-
-//        cout << "value is: " << data.second << " len is " << key_length << endl;
-//        cout << "read " << strlen(data.second) << " ?" << endl;
-//        cout << "data" << data.first << endl;
 
         out_stream << data.first;
         out_stream << (char) key_length; // length of "value"
-//
-//        if(data.first == '8'){
-//            cout << "maybe";
-//        }
 
         for (int i = 0; i < key_length; i++) {
             set_bit(byte, data.second[i], byte_index, byte_index == key_length);
@@ -106,66 +98,9 @@ void Compressor::write_header(ofstream& out_stream) {
             out_stream << (byte);
             byte = 0;
             byte_index = 0;
-//            cout << "byte is " << byte << endl;
         }
 
     }
-
-    out_stream << this->compression_info->bit_count;
-
+    out_stream << this->encode_info->bit_count;
     out_stream << "\\";
-}
-
-//void Compressor::write_header(ofstream& out_stream) {
-//    char byte = 0;
-//    int bits_inserted = 0;
-//    int key_length;
-//    int
-//    int byte_index = 0;
-//    out_stream << this->compression_info->compression_keys->size() << endl;
-//    for (auto data:*this->compression_info->compression_keys){
-//        length = strlen(data.second);
-//
-//        cout << "value is: " << data.second << " len is " << length << endl;
-//        cout << "read " << strlen(data.second) << " ?" << endl;
-//        cout << "data" << data.first << endl;
-//
-//        out_stream << data.first << " " << strlen(data.second) << " ";
-//        for(int i = 0; i < length; i++){
-//            set_bit(byte, data.second[i], byte_index, bits_inserted == length);
-//            byte_index++;
-//            if (byte_index == 8){
-//                out_stream << byte;
-//                bits_inserted++;
-//                byte = 0;
-//                byte_index = 0;
-//            }
-//        }
-//        out_stream << endl;
-//    }
-//
-//    out_stream << "\\" << endl;
-//    out_stream << this->compression_info->bit_count << endl;
-//    out_stream << "\\" << endl;
-//}
-
-
-/*void Compressor::write_header(ofstream& out_stream) {
-    for (auto data:*this->compression_info->compression_keys){
-        out_stream << data.first << " " << data.second << endl;
-    }*/
-
-void Compressor::write_header2(ofstream& out_stream) {
-    int bytes_needed = 0;
-    for (auto data:*this->compression_info->compression_keys){
-        bytes_needed = strlen(data.second)/8;
-        out_stream << data.first << " ";
-        for (int i = 0; i < strlen(data.second); i++){
-
-        }
-    }
-
-    out_stream << "\\" << endl;
-    out_stream << (long)this->compression_info->bit_count << endl;
-    out_stream << "\\" << endl;
 }

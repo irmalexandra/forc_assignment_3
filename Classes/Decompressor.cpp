@@ -1,10 +1,4 @@
-//
-// Created by emmik on 19/02/2021.
-//
-
 #include "Decompressor.h"
-
-
 
 Decompressor::Decompressor(DecodeInfo *decode_info) {
     this->decode_info = decode_info;
@@ -23,11 +17,7 @@ bool is_bit_set(char byte, int k){
     }
 }
 
-
-
-
 void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
-
     auto byte = (char) in_stream.get();
     Node* current_node = this->decode_info->get_root();
     int bit_count = 0;
@@ -35,17 +25,14 @@ void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
         for(int i = 0; i < 8; i++){
 
             if(current_node->get_left() == nullptr && current_node->get_right() == nullptr){
-//                cout << current_node->get_data()->get_value();
                 out_stream << current_node->get_data()->get_value();
                 current_node = this->decode_info->get_root();
             }
 
             if(is_bit_set(byte, i)){
-//                cout << "1";
                 current_node = current_node->get_right();
             }
             else{
-//                cout << "0";
                 current_node = current_node->get_left();
             }
             if(bit_count == *this->decode_info->get_bit_count()) {
@@ -57,15 +44,3 @@ void Decompressor::decompress(ifstream &in_stream, ofstream &out_stream) {
     }
     out_stream << current_node->get_data()->get_value();
 }
-
-
-
-
-
-
-
-
-
-
-
-

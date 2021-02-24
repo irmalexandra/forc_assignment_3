@@ -23,11 +23,11 @@ struct EncodeInfo{
       this->count_bits();
   }
 
-//  ~EncodeInfo(){ TODO:fix?
-//      delete this->file_content;
-//      delete this->compression_keys;
-//      delete[] this->frequency_table;
-//  }
+  ~EncodeInfo(){
+      delete this->file_content;
+      delete this->compression_keys;
+      delete this->frequency_table;
+  }
 
   void count_bits(){
       for (auto freq:*this->frequency_table){
